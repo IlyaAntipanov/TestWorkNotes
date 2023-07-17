@@ -1,0 +1,334 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.1
+-- Dumped by pg_dump version 14.1
+
+-- Started on 2023-07-17 23:27:58
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 213 (class 1259 OID 16634)
+-- Name: NoteTags; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."NoteTags" (
+    "NoteId" integer NOT NULL,
+    "TagId" integer NOT NULL
+);
+
+
+ALTER TABLE public."NoteTags" OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 16615)
+-- Name: Notes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Notes" (
+    "Id" integer NOT NULL,
+    "Title" text NOT NULL,
+    "Body" text NOT NULL,
+    "CreatedDate" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Notes" OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 16614)
+-- Name: Note_Id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Note_Id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Note_Id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3345 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: Note_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Note_Id_seq" OWNED BY public."Notes"."Id";
+
+
+--
+-- TOC entry 215 (class 1259 OID 16640)
+-- Name: Reminders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Reminders" (
+    "Id" integer NOT NULL,
+    "NoteId" integer NOT NULL,
+    "ReminderDateTime" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public."Reminders" OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 16639)
+-- Name: Reminder_Id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Reminder_Id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Reminder_Id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3346 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: Reminder_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Reminder_Id_seq" OWNED BY public."Reminders"."Id";
+
+
+--
+-- TOC entry 212 (class 1259 OID 16624)
+-- Name: Tags; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Tags" (
+    "Id" integer NOT NULL,
+    "Name" text NOT NULL
+);
+
+
+ALTER TABLE public."Tags" OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 16623)
+-- Name: Tag_Id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."Tag_Id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."Tag_Id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 3347 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: Tag_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."Tag_Id_seq" OWNED BY public."Tags"."Id";
+
+
+--
+-- TOC entry 3178 (class 2604 OID 16618)
+-- Name: Notes Id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Notes" ALTER COLUMN "Id" SET DEFAULT nextval('public."Note_Id_seq"'::regclass);
+
+
+--
+-- TOC entry 3180 (class 2604 OID 16643)
+-- Name: Reminders Id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Reminders" ALTER COLUMN "Id" SET DEFAULT nextval('public."Reminder_Id_seq"'::regclass);
+
+
+--
+-- TOC entry 3179 (class 2604 OID 16627)
+-- Name: Tags Id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tags" ALTER COLUMN "Id" SET DEFAULT nextval('public."Tag_Id_seq"'::regclass);
+
+
+--
+-- TOC entry 3337 (class 0 OID 16634)
+-- Dependencies: 213
+-- Data for Name: NoteTags; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."NoteTags" ("NoteId", "TagId") FROM stdin;
+9	1
+9	2
+8	6
+8	1
+\.
+
+
+--
+-- TOC entry 3334 (class 0 OID 16615)
+-- Dependencies: 210
+-- Data for Name: Notes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Notes" ("Id", "Title", "Body", "CreatedDate") FROM stdin;
+9	Note1	BodyNote1	2023-07-17 10:18:03.600418+05
+8	Note2	BodyNote2	2023-07-16 23:39:32.989325+05
+\.
+
+
+--
+-- TOC entry 3339 (class 0 OID 16640)
+-- Dependencies: 215
+-- Data for Name: Reminders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Reminders" ("Id", "NoteId", "ReminderDateTime") FROM stdin;
+1	9	2023-07-21 05:00:00+05
+5	8	2023-07-22 05:00:00+05
+\.
+
+
+--
+-- TOC entry 3336 (class 0 OID 16624)
+-- Dependencies: 212
+-- Data for Name: Tags; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Tags" ("Id", "Name") FROM stdin;
+6	Tag1
+1	Tag2
+2	Tag3
+\.
+
+
+--
+-- TOC entry 3348 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: Note_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Note_Id_seq"', 9, true);
+
+
+--
+-- TOC entry 3349 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: Reminder_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Reminder_Id_seq"', 6, true);
+
+
+--
+-- TOC entry 3350 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: Tag_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Tag_Id_seq"', 8, true);
+
+
+--
+-- TOC entry 3188 (class 2606 OID 16638)
+-- Name: NoteTags NoteTag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."NoteTags"
+    ADD CONSTRAINT "NoteTag_pkey" PRIMARY KEY ("TagId", "NoteId");
+
+
+--
+-- TOC entry 3182 (class 2606 OID 16622)
+-- Name: Notes Note_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Notes"
+    ADD CONSTRAINT "Note_pkey" PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 3190 (class 2606 OID 16645)
+-- Name: Reminders Reminder_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Reminders"
+    ADD CONSTRAINT "Reminder_pkey" PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 3184 (class 2606 OID 16633)
+-- Name: Tags Tag_Name_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tags"
+    ADD CONSTRAINT "Tag_Name_key" UNIQUE ("Name");
+
+
+--
+-- TOC entry 3186 (class 2606 OID 16631)
+-- Name: Tags Tag_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Tags"
+    ADD CONSTRAINT "Tag_pkey" PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 3191 (class 2606 OID 16651)
+-- Name: NoteTags NoteTag_NoteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."NoteTags"
+    ADD CONSTRAINT "NoteTag_NoteId_fkey" FOREIGN KEY ("NoteId") REFERENCES public."Notes"("Id");
+
+
+--
+-- TOC entry 3192 (class 2606 OID 16656)
+-- Name: NoteTags NoteTag_TagId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."NoteTags"
+    ADD CONSTRAINT "NoteTag_TagId_fkey" FOREIGN KEY ("TagId") REFERENCES public."Tags"("Id");
+
+
+--
+-- TOC entry 3193 (class 2606 OID 16646)
+-- Name: Reminders Reminder_NoteId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Reminders"
+    ADD CONSTRAINT "Reminder_NoteId_fkey" FOREIGN KEY ("NoteId") REFERENCES public."Notes"("Id");
+
+
+-- Completed on 2023-07-17 23:27:59
+
+--
+-- PostgreSQL database dump complete
+--
+
