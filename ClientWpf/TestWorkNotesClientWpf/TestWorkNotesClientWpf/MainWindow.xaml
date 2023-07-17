@@ -1,0 +1,188 @@
+﻿<Window x:Class="TestWorkNotesClientWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestWorkNotesClientWpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <TabControl>
+        <TabItem Name="TabItemTag" Header="Tag">
+            <StackPanel>
+                <GroupBox Header="New tag">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Name:"/>
+                        <TextBox Grid.Column="1" Name="TextBoxNewTagName"/>
+                        <Button Grid.Column="2" Content="Add" Name="ButtonAddTag" Click="ButtonAddTag_Click"/>
+                    </Grid>
+                </GroupBox>
+                <ListBox ItemsSource="{Binding Tags}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="200">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Id"/>
+                                <TextBlock HorizontalAlignment="Center" Grid.Column="1" Text="{Binding Id,Mode=TwoWay}"/>
+                                <TextBlock Grid.Column="2" Text="Name"/>
+                                <TextBox Grid.Column="3" Text="{Binding Name}"/>
+                                <Button Grid.Column="4" Tag="{Binding Id}" Content="X" Name="ButtonDeleteTag" Click="ButtonDeleteTag_Click"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </TabItem>
+        <TabItem Name="TabItemNote" Header="Note" Selector.Selected="TabItemNote_Selected">
+            <StackPanel>
+                <GroupBox Header="New note">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Title"/>
+                            <TextBox Grid.Column="1" x:Name="NewNoteTitleTextBox"/>
+                            <TextBlock Grid.Column="2" Text="Text"/>
+                            <TextBox Grid.Column="3" x:Name="NewNoteTextTextBox"/>
+                        </Grid>
+                        <ListBox ItemsSource="{Binding TagNewNote}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}"/>
+                                        <Button Content="X" Name="ButtonRemoveTagNewNote" Click="ButtonRemoveTagNewNote_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Tag:"/>
+                            <ComboBox Name="ComboBoxSelectTag" ItemsSource="{Binding Tags}" SelectedItem="0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Content="Add Tag" Name="ButtonAttachTag" Click="ButtonAttachTag_Click"/>
+                        </StackPanel>
+                        <Button Content="Add Note" HorizontalAlignment="Left" Name="ButtonAddNote" Click="ButtonAddNote_Click"/>
+                    </StackPanel>
+                </GroupBox>
+                <ListBox ItemsSource="{Binding Notes}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Expander Header="{Binding Title}" Name="ExpanderOpenNote" Tag="{Binding Id}" Expanded="ExpanderOpenNote_Expanded">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="Id"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Id,Mode=TwoWay}"/>
+                                    <TextBlock Grid.Row="1" Text="Title:"/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Title,Mode=TwoWay}"/>
+                                    <TextBlock Grid.Row="2" Text="Text:"/>
+                                    <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Body,Mode=TwoWay}"/>
+                                    <ListBox ItemsSource="{Binding Tags,Mode=OneWay}" Grid.ColumnSpan="2" Grid.Row="3">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}"/>
+                                                    <Button Content="X" Name="ButtonRemoveTagNote" Click="ButtonRemoveTagNote_Click" Tag="{Binding .}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2" Grid.Row="4">
+                                        <TextBlock Text="Tag:"/>
+                                        <ComboBox ItemsSource="{Binding Tags,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type local:MainWindow}}}" SelectedItem="0">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Name}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Button Content="Add Tag" Name="ButtonAttachTagSelect" Tag="{Binding Id}" Click="ButtonAttachTagSelect_Click"/>
+                                    </StackPanel>
+                                    <Button Name="ButtonDeleteNote" Content="Delete" Grid.ColumnSpan="2" Grid.Row="5" Tag="{Binding Id}" Click="ButtonDeleteNote_Click"/>
+                                </Grid>
+                            </Expander>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </TabItem>
+        <TabItem Name="TabItemReminder" Header="Reminder" Selector.Selected="TabItemReminder_Selected">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Name="ComboBoxNoteReminder" ItemsSource="{Binding Notes}" SelectedItem="0">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Title}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <DatePicker Grid.Column="1" Name="DatePickerReminder"/>
+                    <Button Grid.Column="2" Content="AddReminder" Name="ButtonAddReminder" Click="ButtonAddReminder_Click"/>
+                </Grid>
+                <ListBox ItemsSource="{Binding Reminders}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Id:"/>
+                                <TextBlock Text="{Binding Id}"/>
+                                <ComboBox SelectedItem="{Binding Note,Mode=TwoWay}" Tag="{Binding Id}" Name="ComboBoxSelectReminder" ItemsSource="{Binding Notes,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type local:MainWindow}}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Title}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <DatePicker SelectedDate="{Binding ReminderDateTime}"/>
+                                <Button Content="X" Name="ButtonDelereReminder" Tag="{Binding Id}" Click="ButtonDelereReminder_Click"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </TabItem>
+        <TabItem Name="TabItemLog" Header="Log">
+            <ListBox ItemsSource="{Binding Log}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBox Text="{Binding Path=.}" IsReadOnly="True" BorderThickness="0" Background="Transparent"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </TabItem>
+    </TabControl>
+</Window>

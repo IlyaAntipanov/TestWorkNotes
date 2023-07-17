@@ -1,0 +1,10 @@
+{
+  "DB": {
+    "Host": "localhost",
+    "Port": 5432,
+    "Database": "dbTestWorkNotes",
+    "Username": "postgres",
+    "Password": "password"
+  },
+  "Port": 44358
+}
